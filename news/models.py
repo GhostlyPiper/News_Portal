@@ -12,7 +12,7 @@ class Author(models.Model):
         pRat = 0
         pRat += postRat.get('postRating')
 
-        commentRat = self.autorUser.comment_set.aggregate(commentRating=Sum('rating'))
+        commentRat = self.authorUser.comment_set.aggregate(commentRating=Sum('rating'))
         cRat = 0
         cRat += commentRat.get('commentRating')
 
@@ -52,7 +52,7 @@ class Post(models.Model):
         self.save()
 
     def preview(self):
-        return '{} ... Рейтинг: {}'.format(self.text[0:123], str(self.rating))
+        return f'{self.text[0:123]} ... Рейтинг: {self.rating}'
 
 
 class PostCategory(models.Model):

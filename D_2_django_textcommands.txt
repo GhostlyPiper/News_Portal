@@ -1,0 +1,170 @@
+	Запускаем shell и импортируем модели:
+
+python manage.py shell
+
+from news.models import *
+
+	Создаём пользователей:
+
+u1 = User.objects.create_user(username='Ivan Ivanov')
+
+u2 = User.objects.create_user(username='Petr Petrov')
+
+u3 = User.objects.create_user(username='Sidr Sidorov')
+
+u4 = User.objects.create_user(username='Kira Kirova')
+
+	Создаём два объекта модели Author, связанные с пользователями:
+
+a1 = Author.objects.create(authorUser=u1)
+
+a2 = Author.objects.create(authorUser=u4)
+
+	Добавляем категории:
+
+Category.objects.create(name='Main news')
+
+Category.objects.create(name='In the world')
+
+Category.objects.create(name='Sport')
+
+Category.objects.create(name='Politics')
+
+Category.objects.create(name='Interesting')
+
+Category.objects.create(name='Cars')
+
+Category.objects.create(name='The science')
+
+Category.objects.create(name='Fake')
+
+	Добавляем статьи и новости:
+
+Post.objects.create(author=a1, categoryType='AR', title='New electric car', text='Here they tell something about new electric cars.')
+
+Post.objects.create(author=a2, categoryType='AR', title='About cats', text='Some nonsense about cute and fluffy meowing quadrupeds.')
+
+Post.objects.create(author=a2, categoryType='NW', title='The cat drives an electric car', text='Not a credible story about a cat who rode a new electric car.')
+
+	Присваиваем им категории:
+
+Post.objects.get(id=1).postCategory.add(Category.objects.get(id=6))
+
+Post.objects.get(id=1).postCategory.add(Category.objects.get(id=5))
+
+Post.objects.get(id=1).postCategory.add(Category.objects.get(id=2))
+
+Post.objects.get(id=2).postCategory.add(Category.objects.get(id=5))
+
+Post.objects.get(id=3).postCategory.add(Category.objects.get(id=1))
+
+Post.objects.get(id=3).postCategory.add(Category.objects.get(id=2))
+
+Post.objects.get(id=3).postCategory.add(Category.objects.get(id=6))
+
+Post.objects.get(id=3).postCategory.add(Category.objects.get(id=8))
+
+	Создаём комментарии:
+
+Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=u3, text='Very interesting article!')
+
+Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=Author.objects.get(id=2).authorUser, text='I know something more interesting about these electric cars')
+
+Comment.objects.create(commentPost=Post.objects.get(id=2), commentUser=u2, text='And again cats!')
+
+Comment.objects.create(commentPost=Post.objects.get(id=2), commentUser=u3, text='Two cats and one kitty!')
+
+Comment.objects.create(commentPost=Post.objects.get(id=3), commentUser=u2, text='Well, well... Bears were riding a bicycle ...')
+
+Comment.objects.create(commentPost=Post.objects.get(id=3), commentUser=Author.objects.get(id=2).authorUser, text='This news made my day!')
+
+Comment.objects.create(commentPost=Post.objects.get(id=3), commentUser=Author.objects.get(id=1).authorUser, text='In which country is this possible?')
+
+Comment.objects.create(commentPost=Post.objects.get(id=3), commentUser=u3, text="It's a pity that lies!")
+
+	Применяем функции like() и dislike() к статьям/новостям и комментариям
+
+Post.objects.get(id=1).like()
+
+Post.objects.get(id=1).like()
+
+Post.objects.get(id=1).like()
+
+Post.objects.get(id=1).like()
+
+Post.objects.get(id=1).rating
+
+Post.objects.get(id=1).dislike()
+
+Post.objects.get(id=1).rating
+
+Post.objects.get(id=2).like()
+
+Post.objects.get(id=2).like()
+
+Post.objects.get(id=2).dislike()
+
+Post.objects.get(id=3).like()
+
+Post.objects.get(id=3).dislike()
+
+Post.objects.get(id=3).dislike()
+
+Post.objects.get(id=3).dislike()
+
+Comment.objects.get(id=2).like()
+
+Comment.objects.get(id=8).like()
+
+Comment.objects.get(id=6).dislike()
+
+Comment.objects.get(id=8).like()
+
+	Обновляем рейтинги пользователей:
+
+a1.update_rating()
+
+a2.update_rating()
+
+	Выводим username и рейтинг лучшего пользователя
+	(применяя сортировку и возвращая поля первого объекта):
+
+res1 = Author.objects.order_by('-ratingAuthor')[:1]
+
+for i in res1:
+    i.authorUser.username
+    i.ratingAuthor
+
+	Выводим дату добавления, username автора, рейтинг, 
+	заголовок и превью лучшей статьи, основываясь на 
+	лайках/дислайках к этой статье:
+
+res2 = Post.objects.order_by('-rating')[:1]
+
+for i in res2:
+    i.dateCreation
+    i.author.authorUser.username
+    i.rating
+    i.title
+    i.preview()
+
+	Выводим все комментарии (дата, пользователь, рейтинг, текст) к этой статье:
+
+Post.objects.all().order_by('-rating')[0].comment_set.values('dateCreation',
+                                                             'commentUser',
+                                                             'rating',
+                                                             'text'
+                                                             )
+
+
+
+
+
+
+
+
+
+
+
+
+
