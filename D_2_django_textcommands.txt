@@ -1,10 +1,10 @@
-	Запускаем shell и импортируем модели:
+п»ї	Р—Р°РїСѓСЃРєР°РµРј shell Рё РёРјРїРѕСЂС‚РёСЂСѓРµРј РјРѕРґРµР»Рё:
 
 python manage.py shell
 
 from news.models import *
 
-	Создаём пользователей:
+	РЎРѕР·РґР°С‘Рј РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№:
 
 u1 = User.objects.create_user(username='Ivan Ivanov')
 
@@ -14,13 +14,13 @@ u3 = User.objects.create_user(username='Sidr Sidorov')
 
 u4 = User.objects.create_user(username='Kira Kirova')
 
-	Создаём два объекта модели Author, связанные с пользователями:
+	РЎРѕР·РґР°С‘Рј РґРІР° РѕР±СЉРµРєС‚Р° РјРѕРґРµР»Рё Author, СЃРІСЏР·Р°РЅРЅС‹Рµ СЃ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏРјРё:
 
 a1 = Author.objects.create(authorUser=u1)
 
 a2 = Author.objects.create(authorUser=u4)
 
-	Добавляем категории:
+	Р”РѕР±Р°РІР»СЏРµРј РєР°С‚РµРіРѕСЂРёРё:
 
 Category.objects.create(name='Main news')
 
@@ -38,7 +38,7 @@ Category.objects.create(name='The science')
 
 Category.objects.create(name='Fake')
 
-	Добавляем статьи и новости:
+	Р”РѕР±Р°РІР»СЏРµРј СЃС‚Р°С‚СЊРё Рё РЅРѕРІРѕСЃС‚Рё:
 
 Post.objects.create(author=a1, categoryType='AR', title='New electric car', text='Here they tell something about new electric cars.')
 
@@ -46,7 +46,7 @@ Post.objects.create(author=a2, categoryType='AR', title='About cats', text='Some
 
 Post.objects.create(author=a2, categoryType='NW', title='The cat drives an electric car', text='Not a credible story about a cat who rode a new electric car.')
 
-	Присваиваем им категории:
+	РџСЂРёСЃРІР°РёРІР°РµРј РёРј РєР°С‚РµРіРѕСЂРёРё:
 
 Post.objects.get(id=1).postCategory.add(Category.objects.get(id=6))
 
@@ -64,7 +64,7 @@ Post.objects.get(id=3).postCategory.add(Category.objects.get(id=6))
 
 Post.objects.get(id=3).postCategory.add(Category.objects.get(id=8))
 
-	Создаём комментарии:
+	РЎРѕР·РґР°С‘Рј РєРѕРјРјРµРЅС‚Р°СЂРёРё:
 
 Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=u3, text='Very interesting article!')
 
@@ -82,7 +82,7 @@ Comment.objects.create(commentPost=Post.objects.get(id=3), commentUser=Author.ob
 
 Comment.objects.create(commentPost=Post.objects.get(id=3), commentUser=u3, text="It's a pity that lies!")
 
-	Применяем функции like() и dislike() к статьям/новостям и комментариям
+	РџСЂРёРјРµРЅСЏРµРј С„СѓРЅРєС†РёРё like() Рё dislike() Рє СЃС‚Р°С‚СЊСЏРј/РЅРѕРІРѕСЃС‚СЏРј Рё РєРѕРјРјРµРЅС‚Р°СЂРёСЏРј
 
 Post.objects.get(id=1).like()
 
@@ -120,14 +120,14 @@ Comment.objects.get(id=6).dislike()
 
 Comment.objects.get(id=8).like()
 
-	Обновляем рейтинги пользователей:
+	РћР±РЅРѕРІР»СЏРµРј СЂРµР№С‚РёРЅРіРё РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№:
 
 a1.update_rating()
 
 a2.update_rating()
 
-	Выводим username и рейтинг лучшего пользователя
-	(применяя сортировку и возвращая поля первого объекта):
+	Р’С‹РІРѕРґРёРј username Рё СЂРµР№С‚РёРЅРі Р»СѓС‡С€РµРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+	(РїСЂРёРјРµРЅСЏСЏ СЃРѕСЂС‚РёСЂРѕРІРєСѓ Рё РІРѕР·РІСЂР°С‰Р°СЏ РїРѕР»СЏ РїРµСЂРІРѕРіРѕ РѕР±СЉРµРєС‚Р°):
 
 res1 = Author.objects.order_by('-ratingAuthor')[:1]
 
@@ -135,9 +135,9 @@ for i in res1:
     i.authorUser.username
     i.ratingAuthor
 
-	Выводим дату добавления, username автора, рейтинг, 
-	заголовок и превью лучшей статьи, основываясь на 
-	лайках/дислайках к этой статье:
+	Р’С‹РІРѕРґРёРј РґР°С‚Сѓ РґРѕР±Р°РІР»РµРЅРёСЏ, username Р°РІС‚РѕСЂР°, СЂРµР№С‚РёРЅРі, 
+	Р·Р°РіРѕР»РѕРІРѕРє Рё РїСЂРµРІСЊСЋ Р»СѓС‡С€РµР№ СЃС‚Р°С‚СЊРё, РѕСЃРЅРѕРІС‹РІР°СЏСЃСЊ РЅР° 
+	Р»Р°Р№РєР°С…/РґРёСЃР»Р°Р№РєР°С… Рє СЌС‚РѕР№ СЃС‚Р°С‚СЊРµ:
 
 res2 = Post.objects.order_by('-rating')[:1]
 
@@ -148,7 +148,7 @@ for i in res2:
     i.title
     i.preview()
 
-	Выводим все комментарии (дата, пользователь, рейтинг, текст) к этой статье:
+	Р’С‹РІРѕРґРёРј РІСЃРµ РєРѕРјРјРµРЅС‚Р°СЂРёРё (РґР°С‚Р°, РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ, СЂРµР№С‚РёРЅРі, С‚РµРєСЃС‚) Рє СЌС‚РѕР№ СЃС‚Р°С‚СЊРµ:
 
 Post.objects.all().order_by('-rating')[0].comment_set.values('dateCreation',
                                                              'commentUser',
