@@ -155,3 +155,4 @@ Post.objects.all().order_by('-rating')[0].comment_set.values('dateCreation',
                                                              'rating',
                                                              'text'
                                                              )
+
