@@ -1,0 +1,23 @@
+<!--  наследуемся от шаблона default.html -->
+{% extends 'default.html' %}
+{% load custom_filters %}
+
+{% block title %}
+{{ post.title|censor }}
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим саму статью, идентификатор которого был передан в url -->
+{% block content %}
+    <h1>{{ post.title|censor }}</h1>
+    <hr>
+    <b>Дата публикации:</b> {{ post.dateCreation|date:'d M Y' }}
+    <b>Автор:</b> {{ post.author}}
+    <b>Категория:</b>
+    {% for cat in post.postCategory.all %}
+        "{{ cat }}",
+    {% endfor %}
+    <b>Рейтинг статьи:</b> {{ post.rating}}
+    <hr>
+    {{ post.text|censor }}
+
+{% endblock content %}

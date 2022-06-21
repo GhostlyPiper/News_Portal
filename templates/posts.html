@@ -1,0 +1,40 @@
+<!--  наследуемся от шаблона default.html -->
+{% extends 'default.html' %}
+{% load custom_filters %}
+
+<!-- Название у нас будет News -->
+{% block title %}
+News
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все посты -->
+{% block content %}
+    <h1>Все новости</h1>
+    <hr>
+    {% if posts %}
+    <h2>Последние публикации - {{ posts|length }}</h2>
+    {% else %}
+       <h2>На данный момент свежих публикаций нет!</h2>
+    {% endif %}
+    <hr>
+    {% if posts %}
+       <table>
+           <tr>
+               <td><b>Название</b></td>
+               <td><b>Дата публикации</b></td>
+               <td><b>Краткое содержание</b></td>
+           </tr>
+
+           {% for post in posts %}
+           <tr>
+               <td>{{ post.title|censor }}</td>
+               <td>{{ post.dateCreation|date:'d M Y' }}</td>
+               <td>{{ post.text|truncatewords:20|censor }}</td>
+           </tr>
+           {% endfor %}
+
+       </table>
+   {% else %}
+       <h2>Кажется ничего интересного пока нет!</h2>
+   {% endif %}
+{% endblock content %}
