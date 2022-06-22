@@ -23,32 +23,16 @@ def censor(text):
         while l_text:
             word = re.sub(r"([\w/'+$\s-]+|[^\w/'+$\s-]+)\s*", r"\1 ", l_text[0])
             l_word = word.split()
+            cens_word = []
 
             for i in l_word:
-                count = len(l_word) - 1
-
-                if count == 0 and i.lower() in CENSORED:
+                if i.lower() in CENSORED:
                     bad_word = i[0] + '*' * (len(i) - 1)
-                    cens_text.append(bad_word)
-                    break
+                    cens_word.append(bad_word)
+                else:
+                    cens_word.append(i)
 
-                if count and i.lower() in CENSORED:
-                    bad_word = i[0] + '*' * (len(i) - 1)
-                    g = "".join(l_word)
-                    res = g.replace(i, bad_word)
-                    cens_text.append(res)
-                    break
-
-                if count == 0 and i.lower() not in CENSORED:
-                    res = "".join(l_word)
-                    cens_text.append(res)
-                    break
-
-                if count and i.lower() not in CENSORED:
-                    res = "".join(l_word)
-                    cens_text.append(res)
-                    break
-
+            cens_text.append("".join(cens_word))
             l_text.remove(l_text[0])
 
         return " ".join(cens_text)
