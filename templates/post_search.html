@@ -11,9 +11,9 @@ Search
     <h1>Поиск публикаций</h1>
     <h4>Текущая дата: {% current_time '%d %B %Y' %}</h4>
     <hr>
-    <form action="" method="GET">
-    {{ filter.form }}
-        <p><input type="date"></p>
+    <form method="GET">
+        {{ filter.form }}
+
     <input type="submit" value="Найти">
     </form>
     {% if posts %}
@@ -26,7 +26,7 @@ Search
                 <td><b>Рейтинг</b></td>
            </tr>
 
-            {% for post in posts %}
+            {% for post in search.qs %}
             <tr>
                 <td>{{ post.title|censor }}</td>
                 <td>{{ post.dateCreation|date:'d M Y' }}</td>
