@@ -8,15 +8,25 @@ Search
 {% endblock title %}
 
 {% block content %}
-    <h1>Поиск публикаций</h1>
+
+    <h3>Поиск публикаций</h3>
     <h4>Текущая дата: {% current_time '%d %B %Y' %}</h4>
     <hr>
     <form method="GET">
         {{ filter.form }}
-
-    <input type="submit" value="Найти">
+        <hr>
+        <p><input type="submit" value="Найти"></p>
     </form>
-    {% if posts %}
+    {% if filter.qs %}
+        <h3>
+            {% if filter.qs|length > 1 %}
+                {{ filter.qs|length }} - posts found
+            {% elif filter.qs|length == 1 %}
+                Only 1 post found
+            {% elif filter.qs|length == 0 %}
+                No posts found!
+            {% endif %}
+        </h3>
         <table>
             <tr>
                 <td><b>Название</b></td>
@@ -26,7 +36,7 @@ Search
                 <td><b>Рейтинг</b></td>
            </tr>
 
-            {% for post in search.qs %}
+            {% for post in filter.qs %}
             <tr>
                 <td>{{ post.title|censor }}</td>
                 <td>{{ post.dateCreation|date:'d M Y' }}</td>
@@ -38,7 +48,7 @@ Search
 
         </table>
     {% else %}
-        <h2>По этим критериям ничего не найдено</h2>
+        <h2>Здесь пока пусто!</h2>
     {% endif %}
 
     {% if page_obj.has_previous %}

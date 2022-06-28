@@ -2,6 +2,7 @@
 # что в этом представлении мы будем выводить список объектов из БД
 from django.views.generic import ListView, DetailView
 from .models import Post
+from .filters import PostFilter
 
 
 class PostList(ListView):
@@ -16,7 +17,7 @@ class PostList(ListView):
     # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
     context_object_name = 'posts'
     # вот так мы можем указать количество записей на странице:
-    paginate_by = 10
+    paginate_by = 5
 
 
 class PostDetail(DetailView):
@@ -29,4 +30,18 @@ class PostDetail(DetailView):
 
 
 class PostSearchView(PostList):
+    model = Post
     template_name = 'post_search.html'
+    paginate_by = 3
+
+    def get_filter(self):
+        return PostFilter(self.request.GET, queryset=super().get_queryset())
+
+    def get_queryset(self):
+        return self.get_filter().qs
+
+    def get_context_data(self, *args, **kwargs):
+        return {
+            **super().get_context_data(*args, **kwargs),
+            'filter': self.get_filter(),
+        }
