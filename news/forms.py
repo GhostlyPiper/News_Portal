@@ -11,24 +11,21 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = [
-            'author',
             'title',
-            'dateCreation',
-            'postCategory',
-            'rating',
             'text',
+            'postCategory',
         ]
 
     def clean(self):
         cleaned_data = super().clean()
-        body = cleaned_data.get("body")
-        if body is not None and len(body) < 20:
+        text = cleaned_data.get("text")
+        if text is not None and len(text) < 20:
             raise ValidationError({
-                "body": "Текст поста не может быть менее 20 символов."
+                "text": "Текст поста не может быть менее 20 символов."
             })
 
         title = cleaned_data.get("title")
-        if title == body:
+        if title == text:
             raise ValidationError(
                 "Название не должно совпадать с основным текстом."
             )

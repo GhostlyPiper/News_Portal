@@ -17,28 +17,33 @@ Search
         <hr>
         <p><input type="submit" value="Найти"></p>
     </form>
-    {% if filter.qs %}
+    {% if filter.qs  %}
         <h3>
             {% if filter.qs|length > 1 %}
                 {{ filter.qs|length }} - posts found
             {% elif filter.qs|length == 1 %}
                 Only 1 post found
-            {% elif filter.qs|length == 0 %}
-                No posts found!
             {% endif %}
         </h3>
         <table>
             <tr>
                 <td><b>Название</b></td>
+                <td><b>Тип</b></td>
                 <td><b>Дата публикации</b></td>
                 <td><b>Автор</b></td>
                 <td><b>Краткое содержание</b></td>
                 <td><b>Рейтинг</b></td>
            </tr>
 
-            {% for post in filter.qs %}
+            {% for post in search_list %}
             <tr>
                 <td>{{ post.title|censor }}</td>
+                <td>{% if post.categoryType == 'NW' %}
+                        Новость
+                    {% elif post.categoryType == 'AR'  %}
+                        Статья
+                    {% endif %}
+                </td>
                 <td>{{ post.dateCreation|date:'d M Y' }}</td>
                 <td>{{ post.author }}</td>
                 <td>{{ post.text|truncatewords:20|censor }}</td>
@@ -48,7 +53,7 @@ Search
 
         </table>
     {% else %}
-        <h2>Здесь пока пусто!</h2>
+        <h2>По таким критериям постов нет!</h2>
     {% endif %}
 
     {% if page_obj.has_previous %}
