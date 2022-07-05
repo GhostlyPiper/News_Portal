@@ -1,0 +1,15 @@
+{% extends 'default.html' %}
+
+{% block title %}Редактирование профиля{% endblock title %}
+
+{% block content %}
+<h1>Ваш Профиль</h1>
+<hr>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Обновить профиль"/>
+</form>
+<hr>
+{% endblock content %}
