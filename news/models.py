@@ -26,9 +26,18 @@ class Author(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
+    subscribers = models.ManyToManyField(User, through='CategorySubscribers', blank=True)
 
     def __str__(self):
         return f'{self.name.title()}'
+
+
+class CategorySubscribers(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.user}, {self.category}'
 
 
 class Post(models.Model):
@@ -71,6 +80,9 @@ class Post(models.Model):
 class PostCategory(models.Model):
     postThrough = models.ForeignKey(Post, on_delete=models.CASCADE)
     categoryThrough = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.categoryThrough} <-> {self.postThrough.title()}'
 
 
 class Comment(models.Model):

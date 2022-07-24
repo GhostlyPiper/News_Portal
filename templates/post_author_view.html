@@ -1,0 +1,68 @@
+{% extends 'default.html' %}
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block content %}
+
+    {% if author_posts %}
+    <h2>Все ваши публикации:</h2>
+    <hr>
+    <table>
+                <tr>
+                    <td><b>Название</b></td>
+                    <td><b>Тип</b></td>
+                    <td><b>Дата публикации</b></td>
+                    <td><b>Автор</b></td>
+                    <td><b>Краткое содержание</b></td>
+                    <td><b>Рейтинг</b></td>
+               </tr>
+
+                {% for post in author_posts %}
+                <tr>
+                    <td>{{ post.title|censor }}</td>
+                    <td>{% if post.categoryType == 'NW' %}
+                            Новость
+                        {% elif post.categoryType == 'AR'  %}
+                            Статья
+                        {% endif %}
+                    </td>
+                    <td>{{ post.dateCreation|date:'d M Y' }}</td>
+                    <td>{{ post.author }}</td>
+                    <td>{{ post.text|truncatewords:20|censor }}</td>
+                    <td>{{ post.rating }}</td>
+                </tr>
+                {% endfor %}
+
+            </table>
+    {% else %}
+        <br><b>Вы пока ещё не добавили ни одной публикации.</b>
+
+    {% endif %}
+<hr>
+<button> <a href="/news/news/create"> Добавить новость </a> </button>
+<button> <a href="/news/articles/create"> Добавить статью </a> </button>
+<hr>
+    {# Добавляем пагинацию на страницу #}
+    {# Информация о предыдущих страницах #}
+    {% if page_obj.has_previous %}
+        {# Для каждой ссылки пагинации указываем обработку через новый тег #}
+        <a href="?{% url_replace page=1 %}">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+            ...
+            <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
+
+    {# Информация о текущей странице #}
+    {{ page_obj.number }}
+
+    {# Информация о следующих страницах #}
+    {% if page_obj.has_next %}
+        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
+            ...
+            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}

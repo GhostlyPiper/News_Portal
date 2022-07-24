@@ -7,7 +7,7 @@ from django_filters import (FilterSet,
                             CharFilter,
                             )
 
-from .models import Author, Category
+from .models import Author, Category, CategorySubscribers
 
 
 class PostFilter(FilterSet):
@@ -40,3 +40,12 @@ class PostFilter(FilterSet):
         queryset=Category.objects.all(),
         label='Категория',
     )
+
+
+class CategoryFilter(FilterSet):
+    category = ModelChoiceFilter(queryset=Category.objects.all())
+    user = ModelChoiceFilter(queryset=Category.objects.all())
+
+    class Meta:
+        model = CategorySubscribers
+        fields = ['category']
