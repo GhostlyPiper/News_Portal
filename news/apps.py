@@ -9,5 +9,4 @@ class NewsConfig(AppConfig):
     # импортировался модуль со всеми функциями обработчиками
     def ready(self):
         import news.signals
-        import news.apscheduler
-        news.apscheduler.run()
+

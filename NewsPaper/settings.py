@@ -52,12 +52,13 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'django_apscheduler',
 
-    'news.apps.NewsConfig',
-    'news',
+
+    # 'news',
     'accounts',
     'django_filters',
     'sign',
     'protect',
+    'news.apps.NewsConfig',
 ]
 
 MIDDLEWARE = [
