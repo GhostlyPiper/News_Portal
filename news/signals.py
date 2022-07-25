@@ -5,7 +5,6 @@ from django.dispatch import receiver
 from .models import *
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from .models import Post
 from datetime import timedelta, date
 
 
