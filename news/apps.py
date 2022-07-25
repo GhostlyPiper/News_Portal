@@ -9,4 +9,3 @@ class NewsConfig(AppConfig):
     # импортировался модуль со всеми функциями обработчиками
     def ready(self):
         import news.signals
-

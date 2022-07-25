@@ -2,7 +2,7 @@ import logging
 
 from django.conf import settings
 
-from News_Portal.news.signals import week_post_2
+from news.signals import week_post_2
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
