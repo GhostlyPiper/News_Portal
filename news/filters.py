@@ -26,7 +26,9 @@ class PostFilter(FilterSet):
         label='Автор',
         empty_label='Все'
     )
-    date.field.error_messages = {'invalid': 'Enter date in format DD.MM.YYYY. Example: 31.12.2020'}
+    date.field.error_messages = {
+        'invalid': 'Enter date in format DD.MM.YYYY. Example: 31.12.2020'
+    }
     date.field.widget.attrs = {'placeholder': 'DD.MM.YYYY'}
     # Этот вариант не самый удачный!
     # Category = ModelChoiceFilter(

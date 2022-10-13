@@ -1,11 +1,23 @@
 {% extends 'default.html' %}
 
 {% block content %}
-<h2>Страница авторизованного пользователя {{request.user.username}}</h2>
-<div> Здесь может содержаться персональная информация для каждого пользователя </div>
+<h2>Приветствуем {{request.user.username.title}}!</h2>
+<h5>Вы успешно авторизовались на нашем сайте.</h5>
+<hr>
 {% if is_not_author %}
-<button> <a href="sign/upgrade/"> Стать автором </a> </button>
+    <div> Что бы иметь возможность добавлять свои публикации авторизуйтесь как автор! ->
+    <button> <a href="sign/upgrade/"> Стать автором </a> </button>
+    </div>
+{% else %}
+<h6> Вы входите в группу "Авторы" и можете добавлять свои публикации!</h6>
+    <button> <a href="sign/log_out_author/"> Выйти из группы Авторы </a> </button>
+
 {% endif %}
-<button> <a href="sign/logout/">Выйти</a> </button>
+
+<hr>
+Что бы отредактировать профиль нажмите ->
 <button> <a href="sign/profile_update/">Редактировать профиль</a> </button>
+<hr>
+Разлогиниться ->
+<button> <a href="sign/logout/">Выйти</a> </button>
 {% endblock %}

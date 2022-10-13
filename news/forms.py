@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import Post, CategorySubscribers
+from .models import Post
 
 
 class PostForm(forms.ModelForm):
@@ -27,9 +27,3 @@ class PostForm(forms.ModelForm):
                 "Название не должно совпадать с основным текстом."
             )
         return cleaned_data
-
-
-class SubscriberForm(forms.ModelForm):
-    class Meta:
-        model = CategorySubscribers
-        fields = ['category']

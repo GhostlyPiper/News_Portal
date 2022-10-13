@@ -10,8 +10,9 @@ from .views import (PostList,
                     NewsDelete,
                     ArticlesDelete,
                     PostAuthorView,
+                    sub_cat,
+                    un_sub_cat,
                     CategoryList,
-                    add_subscribe,
 
                     )
 
@@ -32,9 +33,12 @@ urlpatterns = [
     path('articles/create/', ArticlesCreate.as_view(), name='articles_create'),
     path('news/<int:pk>/edit', NewsEdit.as_view(), name='news_edit'),
     path('news/<int:pk>/delete', NewsDelete.as_view(), name='news_delete'),
-    path('articles/<int:pk>/edit', ArticlesEdit.as_view(), name='articles_edit'),
-    path('articles/<int:pk>/delete', ArticlesDelete.as_view(), name='articles_delete'),
+    path('articles/<int:pk>/edit', ArticlesEdit.as_view(),
+         name='articles_edit'),
+    path('articles/<int:pk>/delete', ArticlesDelete.as_view(),
+         name='articles_delete'),
     path('my_posts/', PostAuthorView.as_view(), name='post_author_view'),
-    path('sub/', CategoryList.as_view(), name='categories'),
-    path('add_sub/category/<int:pk>', add_subscribe, name='add_sub'),
+    path('sub_cat/category/<int:pk>', sub_cat, name='sub_cat'),
+    path('un_sub_cat/category/<int:pk>', un_sub_cat, name='un_sub_cat'),
+    path('categories/<int:pk>', CategoryList.as_view(), name='category_list'),
 ]

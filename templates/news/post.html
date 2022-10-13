@@ -8,7 +8,7 @@
 
 <!-- В контенте на странице мы выводим саму статью, идентификатор которого был передан в url -->
 {% block content %}
-    <h1>{{ post.title|censor }}</h1>
+    <h3>{{ post.title|censor }}</h3>
     <hr>
     <b>Дата публикации:</b> {{ post.dateCreation|date:'d M Y' }}
     <b>Автор:</b> {{ post.author}}

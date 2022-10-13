@@ -1,3 +1,5 @@
+
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
@@ -13,7 +15,9 @@ class Author(models.Model):
         pRat = 0
         pRat += postRat.get('postRating')
 
-        commentRat = self.authorUser.comment_set.aggregate(commentRating=Sum('rating'))
+        commentRat = self.authorUser.comment_set.aggregate(
+            commentRating=Sum('rating')
+        )
         cRat = 0
         cRat += commentRat.get('commentRating')
 
@@ -24,20 +28,48 @@ class Author(models.Model):
         return f'{self.authorUser}'
 
 
+class AuthorSubscribers(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        blank=True, null=True
+    )
+    author = models.ForeignKey(
+        Author,
+        on_delete=models.CASCADE,
+        blank=True, null=True
+    )
+
+    def __str__(self):
+        return f'{self.user} <->  {self.author}'
+
+
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
-    subscribers = models.ManyToManyField(User, through='CategorySubscribers', blank=True)
+    subscribers = models.ManyToManyField(
+        User,
+        through='CategorySubscribers',
+        blank=True
+    )
 
     def __str__(self):
         return f'{self.name.title()}'
 
 
 class CategorySubscribers(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        blank=True, null=True
+    )
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE,
+        blank=True, null=True
+    )
 
     def __str__(self):
-        return f'{self.user}, {self.category}'
+        return f'{self.user} <->  {self.category}'
 
 
 class Post(models.Model):
@@ -53,7 +85,7 @@ class Post(models.Model):
                                     choices=CATEGORY_CHOICES,
                                     default=ARTICLE
                                     )
-    dateCreation = models.DateTimeField(auto_now_add=True)
+    dateCreation = models.DateTimeField(default=timezone.now)  # auto_now_add=True
     postCategory = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(max_length=128, unique=True)
     text = models.TextField()
@@ -82,7 +114,7 @@ class PostCategory(models.Model):
     categoryThrough = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.categoryThrough} <-> {self.postThrough.title()}'
+        return f'{self.postThrough} <-> {self.categoryThrough}'
 
 
 class Comment(models.Model):

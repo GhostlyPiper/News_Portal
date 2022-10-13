@@ -1,0 +1,86 @@
+<!--  наследуемся от шаблона default.html -->
+{% extends 'default.html' %}
+{% load custom_filters %}
+
+{# Импортируем модуль с нашим тегом #}
+{% load custom_tags %}
+
+<!-- Название у нас будет News -->
+{% block title %}
+{{ category }}
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все посты -->
+{% block content %}
+    <h1>Все новости в категории "{{ category }}"</h1>
+    <h3>{% current_time '%b %d %Y %H:%M' %}</h3>
+    <hr>
+    {% if is_not_subscriber %}
+    <h3>
+        Оформите подписку публикаций категории "{{ category }}"
+    </h3>
+        <button> <a href="/news/sub_cat/category/{{ category.id }}">
+        Подписаться</a> </button>
+
+    {% else %}
+    <h3>
+        Вы подписаны на публикации категории "{{ category }}"
+    </h3>
+        <button> <a href="/news/un_sub_cat/category/{{ category.id }}">
+        Отписаться</a> </button>
+    {% endif %}
+    <hr>
+    {% if category_news_list %}
+        <table>
+            <tr>
+                <td><b>Название</b></td>
+                <td><b>Дата публикации</b></td>
+                <td><b>Автор</b></td>
+                <td><b>Краткое содержание</b></td>
+                <td><b>Рейтинг</b></td>
+                <td><b>Категория</b></td>
+           </tr>
+
+            {% for post in category_news_list %}
+            <tr>
+                <td>{{ post.title|censor }}</td>
+                <td>{{ post.dateCreation|date:'d M Y' }}</td>
+                <td>{{ post.author }}</td>
+                <td>{{ post.text|truncatewords:20|censor }}</td>
+                <td>{{ post.rating }}</td>
+                <td>{% for cat in post.postCategory.all %}
+                    <<a href="/news/categories/{{ cat.id }}">{{ cat }}</a>>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    {% else %}
+        <h2>Кажется ничего интересного пока нет!</h2>
+    {% endif %}
+
+    {# Добавляем пагинацию на страницу #}
+    {# Информация о предыдущих страницах #}
+    {% if page_obj.has_previous %}
+        {# Для каждой ссылки пагинации указываем обработку через новый тег #}
+        <a href="?{% url_replace page=1 %}">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+            ...
+            <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
+
+    {# Информация о текущей странице #}
+    {{ page_obj.number }}
+
+    {# Информация о следующих страницах #}
+    {% if page_obj.has_next %}
+        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
+            ...
+            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+    {% endif %}
+
+{% endblock content %}

@@ -1,55 +1,67 @@
-<!--  наследуемся от шаблона default.html -->
 {% extends 'default.html' %}
 {% load custom_filters %}
-
-{# Импортируем модуль с нашим тегом #}
 {% load custom_tags %}
 
-<!-- Название у нас будет News -->
+
 {% block title %}
-News
+Search
 {% endblock title %}
 
-<!-- В контенте на странице мы выводим все посты -->
 {% block content %}
-    <h1>Все новости</h1>
-    <h3>{% current_time '%b %d %Y %H:%M' %}</h3>
+
+    <h3>Поиск публикаций</h3>
+    <h4>Текущая дата: {% current_time '%d %B %Y' %}</h4>
     <hr>
-    {% if posts %}
-    <h2>Публикаций на странице - {{ posts|length }}</h2>
-    {% else %}
-        <h2>На данный момент свежих публикаций нет!</h2>
-    {% endif %}
-    <hr>
-    {% if posts %}
+    <form method="GET">
+        {{ filter.form }}
+        <hr>
+        <p><input type="submit" value="Найти"></p>
+    </form>
+    {% if filter.qs  %}
+        <h3>
+            {% if filter.qs|length > 1 %}
+                {{ filter.qs|length }} - posts found
+            {% elif filter.qs|length == 1 %}
+                Only 1 post found
+            {% endif %}
+        </h3>
         <table>
             <tr>
                 <td><b>Название</b></td>
+                <td><b>Тип</b></td>
                 <td><b>Дата публикации</b></td>
                 <td><b>Автор</b></td>
                 <td><b>Краткое содержание</b></td>
                 <td><b>Рейтинг</b></td>
+                <td><b>Категория</b></td>
            </tr>
 
-            {% for post in posts %}
+            {% for post in search_list %}
             <tr>
-                <td>{{ post.title|censor }}</td>
+                <td><a href="/news/{{ post.id }}">{{ post.title|censor }}</a></td>
+                <td>{% if post.categoryType == 'NW' %}
+                        Новость
+                    {% elif post.categoryType == 'AR'  %}
+                        Статья
+                    {% endif %}
+                </td>
                 <td>{{ post.dateCreation|date:'d M Y' }}</td>
                 <td>{{ post.author }}</td>
                 <td>{{ post.text|truncatewords:20|censor }}</td>
                 <td>{{ post.rating }}</td>
+                <td>{% for cat in post.postCategory.all %}
+                        <<a href="/news/categories/{{ cat.id }}">{{ cat }}</a>>
+                    {% endfor %}
+                </td>
             </tr>
             {% endfor %}
 
         </table>
     {% else %}
-        <h2>Кажется ничего интересного пока нет!</h2>
+        <h2>По таким критериям постов нет!</h2>
     {% endif %}
 
-    {# Добавляем пагинацию на страницу #}
-    {# Информация о предыдущих страницах #}
     {% if page_obj.has_previous %}
-        {# Для каждой ссылки пагинации указываем обработку через новый тег #}
         <a href="?{% url_replace page=1 %}">1</a>
         {% if page_obj.previous_page_number != 1 %}
             ...
@@ -57,10 +69,8 @@ News
         {% endif %}
     {% endif %}
 
-    {# Информация о текущей странице #}
     {{ page_obj.number }}
 
-    {# Информация о следующих страницах #}
     {% if page_obj.has_next %}
         <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
         {% if paginator.num_pages != page_obj.next_page_number %}

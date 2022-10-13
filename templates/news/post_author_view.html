@@ -11,6 +11,7 @@
                 <tr>
                     <td><b>Название</b></td>
                     <td><b>Тип</b></td>
+                    <td><b>Категория</b></td>
                     <td><b>Дата публикации</b></td>
                     <td><b>Автор</b></td>
                     <td><b>Краткое содержание</b></td>
@@ -19,12 +20,16 @@
 
                 {% for post in author_posts %}
                 <tr>
-                    <td>{{ post.title|censor }}</td>
+                    <td><a href="/news/{{ post.id }}">{{ post.title|censor }}</a></td>
                     <td>{% if post.categoryType == 'NW' %}
                             Новость
                         {% elif post.categoryType == 'AR'  %}
                             Статья
                         {% endif %}
+                    </td>
+                    <td>{% for cat in post.postCategory.all %}
+                        <<a href="/news/categories/{{ cat.id }}">{{ cat }}</a>>
+                    {% endfor %}
                     </td>
                     <td>{{ post.dateCreation|date:'d M Y' }}</td>
                     <td>{{ post.author }}</td>
@@ -38,9 +43,16 @@
         <br><b>Вы пока ещё не добавили ни одной публикации.</b>
 
     {% endif %}
+
 <hr>
+{% if is_not_author %}
+    <div> Что бы иметь возможность добавлять свои публикации авторизуйтесь как автор! ->
+    <button> <a href="http://127.0.0.1:8000/sign/upgrade/"> Стать автором </a> </button>
+    </div>
+{% else %}
 <button> <a href="/news/news/create"> Добавить новость </a> </button>
 <button> <a href="/news/articles/create"> Добавить статью </a> </button>
+{% endif %}
 <hr>
     {# Добавляем пагинацию на страницу #}
     {# Информация о предыдущих страницах #}

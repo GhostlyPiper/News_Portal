@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from django.views.generic.edit import CreateView, UpdateView
 from .models import BaseRegisterForm
-from .forms import UpdateProfileForm
+from .basic_forms import UpdateProfileForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.shortcuts import redirect
@@ -16,12 +16,23 @@ class BaseRegisterView(CreateView):
 
 
 @login_required
-def upgrade_me(request):
+def log_in_author(request):
     user = request.user
     authors_group = Group.objects.get(name='authors')
     if not request.user.groups.filter(name='authors').exists():
         authors_group.user_set.add(user)
         Author.objects.create(authorUser=user)
+    return redirect('/')
+
+
+@login_required
+def log_out_author(request):
+    user = request.user
+    authors_group = Group.objects.get(name='authors')
+    if request.user.groups.filter(name='authors').exists():
+        authors_group.user_set.remove(user)
+        d = Author.objects.get(authorUser=user)
+        d.delete()
     return redirect('/')
 
 
