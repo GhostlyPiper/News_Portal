@@ -10,7 +10,7 @@ django-allauth==0.51.0
 django-apscheduler==0.6.2
 django-filter==22.1
 idna==3.3
-oauthlib==3.2.0
+oauthlib==3.2.1
 pycparser==2.21
 PyJWT==2.4.0
 python-dotenv==0.20.0
