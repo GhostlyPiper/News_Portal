@@ -160,7 +160,6 @@ class ArticlesCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 
             cat = Category.objects.get(pk=self.request.POST['postCategory'])
             self.object.postCategory.add(cat)
-
             validated = super().form_valid(form)
 
         else:

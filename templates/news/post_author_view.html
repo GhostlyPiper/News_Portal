@@ -50,8 +50,12 @@
     <button> <a href="http://127.0.0.1:8000/sign/upgrade/"> Стать автором </a> </button>
     </div>
 {% else %}
-<button> <a href="/news/news/create"> Добавить новость </a> </button>
-<button> <a href="/news/articles/create"> Добавить статью </a> </button>
+    <button> <a href="/news/news/create"> Добавить новость </a> </button>
+    <button> <a href="/news/articles/create"> Добавить статью </a> </button>
+    <hr>
+    <b>ВНИМАНИЕ!!! При удалении из группы "Авторы" все ваши публикации автоматически удаляются!</b>
+    <br><button> <a href="/sign/log_out_author/"> Выйти из группы Авторы </a> </button>
+
 {% endif %}
 <hr>
     {# Добавляем пагинацию на страницу #}

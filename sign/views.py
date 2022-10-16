@@ -22,7 +22,7 @@ def log_in_author(request):
     if not request.user.groups.filter(name='authors').exists():
         authors_group.user_set.add(user)
         Author.objects.create(authorUser=user)
-    return redirect('/')
+    return redirect('/news/my_posts')
 
 
 @login_required

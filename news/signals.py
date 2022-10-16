@@ -5,7 +5,6 @@ from django.dispatch import receiver
 from .models import *
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from datetime import timedelta, date
 
 
 def send_notifications(preview, pk, title, subscribe):

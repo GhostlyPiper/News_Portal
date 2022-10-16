@@ -12,6 +12,8 @@ from django.template.loader import render_to_string
 from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJobExecution
 
+from pytz import utc
+
 from news.models import Post, Category
 
 logger = logging.getLogger(__name__)
@@ -51,7 +53,7 @@ class Command(BaseCommand):
     help = "Runs apscheduler."
 
     def handle(self, *args, **options):
-        scheduler = BlockingScheduler(timezone=settings.TIME_ZONE)
+        scheduler = BlockingScheduler(timezone=utc)
         scheduler.add_jobstore(DjangoJobStore(), "default")
 
         # добавляем работу нашему задачнику
