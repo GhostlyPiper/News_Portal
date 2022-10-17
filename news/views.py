@@ -9,18 +9,19 @@ from django.views.generic import (ListView,
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy, resolve
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.template.loader import render_to_string  # импортируем функцию, которая срендерит наш html в текст
-from django.core.mail import EmailMultiAlternatives  # импортируем класс для создания объекта письма с вложением html
-from django.shortcuts import redirect, get_object_or_404, render
-from django.http import HttpResponseRedirect
-
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+)
+from django.shortcuts import get_object_or_404, render
 
 from datetime import datetime
 
 from .models import Post, Author, Category
 from .filters import PostFilter
 from .forms import PostForm
+
+from .tasks import notify_news_create
 
 
 class PostList(ListView):
@@ -102,6 +103,11 @@ class NewsCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
             self.object.postCategory.add(cat)
 
             validated = super().form_valid(form)
+            notify_news_create.apply_async(
+                [self.object.pk],
+                countdown=5,
+                expires=100
+            )
 
         else:
             messages.error(self.request, self.error_message)
@@ -161,6 +167,11 @@ class ArticlesCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
             cat = Category.objects.get(pk=self.request.POST['postCategory'])
             self.object.postCategory.add(cat)
             validated = super().form_valid(form)
+            notify_news_create.apply_async(
+                [self.object.pk],
+                countdown=5,
+                expires=100
+            )
 
         else:
             messages.error(self.request, self.error_message)
