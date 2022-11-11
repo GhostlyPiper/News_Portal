@@ -28,20 +28,20 @@ class Author(models.Model):
         return f'{self.authorUser}'
 
 
-class AuthorSubscribers(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        blank=True, null=True
-    )
-    author = models.ForeignKey(
-        Author,
-        on_delete=models.CASCADE,
-        blank=True, null=True
-    )
-
-    def __str__(self):
-        return f'{self.user} <->  {self.author}'
+# class AuthorSubscribers(models.Model):
+#     user = models.ForeignKey(
+#         User,
+#         on_delete=models.CASCADE,
+#         blank=True, null=True
+#     )
+#     author = models.ForeignKey(
+#         Author,
+#         on_delete=models.CASCADE,
+#         blank=True, null=True
+#     )
+#
+#     def __str__(self):
+#         return f'{self.user} <->  {self.author}'
 
 
 class Category(models.Model):
@@ -85,7 +85,7 @@ class Post(models.Model):
                                     choices=CATEGORY_CHOICES,
                                     default=ARTICLE
                                     )
-    dateCreation = models.DateTimeField(default=timezone.now)  # auto_now_add=True
+    dateCreation = models.DateTimeField(default=timezone.now)
     postCategory = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(max_length=128, unique=True)
     text = models.TextField()
