@@ -131,8 +131,10 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  # пароль от по
 EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
-# EMAIL_TIMEOUT = 120
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_TIMEOUT = 120
+# if DEBUG:
+#     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 # формат даты, которую будет воспринимать наш задачник
 # (вспоминаем модуль по фильтрам)
@@ -219,3 +221,12 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'  # указывает на хр
 CELERY_ACCEPT_CONTENT = ['application/json']  # допустимый формат данных.
 CELERY_TASK_SERIALIZER = 'json'  # метод сериализации задач.
 CELERY_RESULT_SERIALIZER = 'json'  # метод сериализации результатов.
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        # Указываем, куда будем сохранять кэшируемые файлы! Не забываем
+        # создать папку cache_files внутри папки с manage.py!
+        'LOCATION': os.path.join(BASE_DIR, 'cache_files'),
+    }
+}

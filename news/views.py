@@ -8,12 +8,13 @@ from django.views.generic import (ListView,
                                   )
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse_lazy, resolve
+from django.urls import reverse_lazy
 from django.contrib.auth.mixins import (
     LoginRequiredMixin,
     PermissionRequiredMixin,
 )
 from django.shortcuts import get_object_or_404, render
+from django.core.cache import cache  # импортируем наш кэш
 
 from datetime import datetime
 
@@ -49,6 +50,19 @@ class PostDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     permission_required = (
         'news.view_post',
     )
+
+    # переопределяем метод получения объекта
+    def get_object(self, *args, **kwargs):
+        # Кэш очень похож на словарь, и метод get действует так же.
+        # Он забирает значение по ключу, если его нет, то забирает None.
+        obj = cache.get(f'post-{self.kwargs["pk"]}', None)
+
+        # если объекта нет в кэше, то получаем его и записываем в кэш
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'post-{self.kwargs["pk"]}', obj)
+
+        return obj
 
 
 class PostSearchView(ListView):
