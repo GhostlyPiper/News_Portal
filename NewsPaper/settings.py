@@ -30,6 +30,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
@@ -52,12 +53,11 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'django_apscheduler',
 
-
-    # 'news',
     'accounts',
     'django_filters',
     'sign',
     'protect',
+    # 'news',
     'news.apps.NewsConfig',
 ]
 
@@ -132,8 +132,13 @@ EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 EMAIL_TIMEOUT = 120
-# if DEBUG:
-#     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# список всех админов в формате ('имя', 'их почта')
+ADMINS = [
+    ('admin_1', os.getenv('ADMIN_1_EMAIL')),
+]
 
 
 # формат даты, которую будет воспринимать наш задачник
@@ -216,7 +221,7 @@ STATICFILES_DIRS = [
 ]
 
 
-CELERY_BROKER_URL = 'redis://localhost:6379'  # указывает на URL брокера сообщений (Redis). По умолчанию он находится на порту 6379.
+CELERY_BROKER_URL = 'redis://localhost:6379'  # Указывает на URL брокера сообщений (Redis). По умолчанию он находится на порту 6379.
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'  # указывает на хранилище результатов выполнения задач.
 CELERY_ACCEPT_CONTENT = ['application/json']  # допустимый формат данных.
 CELERY_TASK_SERIALIZER = 'json'  # метод сериализации задач.
@@ -228,5 +233,123 @@ CACHES = {
         # Указываем, куда будем сохранять кэшируемые файлы! Не забываем
         # создать папку cache_files внутри папки с manage.py!
         'LOCATION': os.path.join(BASE_DIR, 'cache_files'),
+    }
+}
+
+RED = "\033[31m"
+GREEN = "\033[32m"
+YELLOW = "\033[33m"
+ORIGIN_COLOR = "\033[0m"
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': f'{ORIGIN_COLOR}%(asctime)s {GREEN}: %(levelname)s : {ORIGIN_COLOR}%(message)s'
+        },
+        'verbose': {
+            'format': f'{YELLOW}: %(levelname)s : {ORIGIN_COLOR}%(asctime)s :: %(pathname)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'error_format': {
+            'format': f'{RED}: %(levelname)s : {ORIGIN_COLOR} %(asctime)s :: %(pathname)s %(module)s %(process)d %(thread)d %(message)s %(exc_info)s'
+        },
+        'info_format': {
+            'format': f': %(levelname)s : %(asctime)s %(module)s %(message)s'
+        },
+        'error_file_format': {
+            'format': '%(levelname)s %(asctime)s %(message)s %(pathname)s %(exc_info)s'
+        },
+        'security_format': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(message)s'
+        },
+        'mail_format': {
+            'format': '%(levelname)s %(asctime)s %(message)s %(pathname)s'
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'console_warning': {
+            'level': 'WARNING',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+        'console_error': {
+            'level': 'ERROR',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'error_format'
+        },
+        'file_info': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'general.log',
+            'formatter': 'info_format',
+        },
+        'file_error': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'error.log',
+            'formatter': 'error_file_format',
+        },
+        'file_security': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'security.log',
+            'formatter': 'security_format',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'mail_format',
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'console_warning', 'console_error', 'file_info'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['mail_admins', 'file_error'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['mail_admins', 'file_error'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.template': {
+            'handlers': ['file_error'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.db_backends': {
+            'handlers': ['file_error'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.security': {
+            'handlers': ['file_security'],
+            'level': 'INFO',
+            'propagate': False,
+        }
     }
 }

@@ -13,6 +13,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
+import logging
+
 from django.contrib import admin
 from django.urls import path, include
 
@@ -23,3 +26,9 @@ urlpatterns = [
     path('sign/', include('sign.urls')),
     path('accounts/', include('allauth.urls')),
  ]
+
+logger_dr = logging.getLogger('django.request')
+logger_cn = logging.getLogger('django')
+
+logger_dr.error("Hello! I'm an error in your app. Enjoy:)")
+logger_cn.error("Hello! I'm another error in your app. Enjoy:)")
