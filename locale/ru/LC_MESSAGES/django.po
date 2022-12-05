@@ -1,0 +1,270 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-05 17:20+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: news/filters.py:18
+msgid "Published after"
+msgstr "Опубликовано после"
+
+#: news/filters.py:23
+msgid "The header contains"
+msgstr "Заголовок содержит"
+
+#: news/filters.py:27 news/models.py:34 templates/news/category_list.html:39
+#: templates/news/post.html:15 templates/news/post_author_view.html:17
+#: templates/news/post_search.html:34 templates/news/posts.html:30
+msgid "Author"
+msgstr "Автор"
+
+#: news/filters.py:44 news/models.py:57 templates/news/category_list.html:42
+#: templates/news/post.html:16 templates/news/post_author_view.html:15
+#: templates/news/post_search.html:37 templates/news/posts.html:32
+msgid "Category"
+msgstr "Категория"
+
+#: news/models.py:35
+msgid "Authors"
+msgstr "Авторы"
+
+#: news/models.py:40
+msgid "category name"
+msgstr "название категории"
+
+#: news/models.py:49
+msgctxt "help text for Category subscribers"
+msgid "subscribers"
+msgstr "подписчики"
+
+#: news/models.py:58
+msgid "Categories"
+msgstr "Категории"
+
+#: news/models.py:83 templates/news/news_edit.html:5
+#: templates/news/post_author_view.html:26 templates/news/post_search.html:44
+msgid "News"
+msgstr "Новость"
+
+#: news/models.py:84 templates/news/articles_edit.html:5
+#: templates/news/post_author_view.html:28 templates/news/post_search.html:46
+msgid "Article"
+msgstr "Статья"
+
+#: news/models.py:147
+msgid "Comment"
+msgstr "Комментарий"
+
+#: news/models.py:148
+msgid "Comments"
+msgstr "Комментарии"
+
+#: news/views.py:98 news/views.py:164
+msgid "No more than 30 posts a day, dude!"
+msgstr "Не более 30 постов в день, чувак!"
+
+#: news/views.py:259
+msgid ""
+"You have successfully subscribed to the newsletter of posts of the category"
+msgstr "Вы успешно подписались на рассылку сообщений категории"
+
+#: news/views.py:277
+msgid ""
+"You have successfully unsubscribed from the mailing list of posts of the "
+"category"
+msgstr "Вы успешно отписались от рассылки сообщений категории"
+
+#: templates/account/profile_update.html:7
+msgid "Your Profile"
+msgstr "Ваш профиль"
+
+#: templates/default.html:30
+msgid "Sign in / Sign up"
+msgstr "Вход / Регистрация"
+
+#: templates/default.html:33 templates/news/posts.html:11
+msgid "Posts"
+msgstr "Все посты"
+
+#: templates/default.html:36 templates/news/post_search.html:8
+msgid "Search"
+msgstr "Поиск"
+
+#: templates/default.html:39
+msgid "My Posts"
+msgstr "Мои посты"
+
+#: templates/news/articles_delete.html:5
+msgid "Deleting an article"
+msgstr "Удаление статьи"
+
+#: templates/news/articles_delete.html:9 templates/news/news_delete.html:9
+msgid "Delete"
+msgstr "Удалить"
+
+#: templates/news/category_list.html:16
+msgid "All news in the category"
+msgstr "Все новости в категории"
+
+#: templates/news/category_list.html:21
+msgid "Subscribe to the category publications"
+msgstr "Подпишитесь на публикации категории"
+
+#: templates/news/category_list.html:24
+msgid "Subscribe"
+msgstr "Подписаться"
+
+#: templates/news/category_list.html:28
+msgid "You are subscribed to the category publications"
+msgstr "Вы подписаны на публикации категории"
+
+#: templates/news/category_list.html:31
+msgid "Unsubscribe"
+msgstr "Отписаться"
+
+#: templates/news/category_list.html:37 templates/news/post_author_view.html:13
+#: templates/news/post_search.html:31 templates/news/posts.html:29
+msgid "Title"
+msgstr "Название"
+
+#: templates/news/category_list.html:38 templates/news/post.html:14
+#: templates/news/post_author_view.html:16 templates/news/post_search.html:33
+#: templates/news/posts.html:28
+msgid "Date of publication"
+msgstr "Дата публикации"
+
+#: templates/news/category_list.html:40 templates/news/post_author_view.html:18
+#: templates/news/post_search.html:35 templates/news/posts.html:31
+msgid "Preview"
+msgstr "Краткое содержание"
+
+#: templates/news/category_list.html:41 templates/news/post.html:20
+#: templates/news/post_author_view.html:19 templates/news/post_search.html:36
+#: templates/news/posts.html:33
+msgid "Rating"
+msgstr "Рейтинг"
+
+#: templates/news/category_list.html:61 templates/news/posts.html:52
+msgid "It seems there is nothing interesting yet"
+msgstr "Кажется, пока ничего интересного нет"
+
+#: templates/news/news_delete.html:5
+msgid "Deleting news"
+msgstr "Удаление новости"
+
+#: templates/news/post_author_view.html:9
+msgid "All your publications"
+msgstr "Все ваши публикации"
+
+#: templates/news/post_author_view.html:14 templates/news/post_search.html:32
+msgid "Type"
+msgstr "Тип"
+
+#: templates/news/post_author_view.html:44
+msgid "You haven't added any posts yet"
+msgstr "Вы еще не добавили ни одного поста"
+
+#: templates/news/post_author_view.html:50 templates/protect/index.html:9
+msgid "To be able to add your publications, log in as an author"
+msgstr ""
+"Чтобы иметь возможность добавлять свои публикации, войдите в систему как "
+"автор"
+
+#: templates/news/post_author_view.html:51 templates/protect/index.html:10
+msgid "Become an author"
+msgstr "Стать автором"
+
+#: templates/news/post_author_view.html:54
+msgid "Add News"
+msgstr "Добавить Новость"
+
+#: templates/news/post_author_view.html:55
+msgid "Add an Article"
+msgstr "Добавить Статью"
+
+#: templates/news/post_author_view.html:57 templates/protect/index.html:13
+msgid ""
+"Attention!!! When you delete from the Authors group, all your publications "
+"are automatically deleted"
+msgstr ""
+"Внимание!!! Когда вы удаляетесь из группы авторов, все ваши публикации "
+"автоматически удаляются"
+
+#: templates/news/post_author_view.html:58 templates/protect/index.html:14
+msgid "Exit the Authors group"
+msgstr "Выйти из группы Авторы"
+
+#: templates/news/post_search.html:13
+msgid "Search for publications"
+msgstr "Поиск публикаций"
+
+#: templates/news/post_search.html:14
+msgid "Current date"
+msgstr "Текущая дата"
+
+#: templates/news/post_search.html:24
+msgid "posts found"
+msgstr "постов найдено"
+
+#: templates/news/post_search.html:26
+msgid "Only 1 post found"
+msgstr "Нашёлся только один пост"
+
+#: templates/news/post_search.html:62
+msgid "There are no posts according to such criteria"
+msgstr "Постов, соответствующих таким критериям, нет"
+
+#: templates/news/posts.html:16
+msgid "All publications"
+msgstr "Все публикации"
+
+#: templates/news/posts.html:20
+msgid "Publications on the page"
+msgstr "Публикаций на странице"
+
+#: templates/news/posts.html:22
+msgid "There are no recent publications at the moment"
+msgstr "На данный момент публикаций нет"
+
+#: templates/protect/index.html:5
+msgid "Welcome"
+msgstr "Добро пожаловать"
+
+#: templates/protect/index.html:6
+msgid "You have successfully logged in to our website"
+msgstr "Вы успешно вошли на наш веб-сайт"
+
+#: templates/protect/index.html:19
+msgid "To edit the profile, click"
+msgstr "Чтобы отредактировать профиль, нажмите"
+
+#: templates/protect/index.html:20
+msgid "Edit Profile"
+msgstr "Редактировать профиль"
+
+#: templates/protect/index.html:22
+msgid "Log Out"
+msgstr "Разлогиниться"
+
+#: templates/protect/index.html:23
+msgid "Exit"
+msgstr "Выйти"
+
+#~ msgid "Attention!!! When you delete from the "
+#~ msgstr "Внимание!!! Когда вы удаляетесь из"

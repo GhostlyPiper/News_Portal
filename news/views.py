@@ -15,6 +15,8 @@ from django.contrib.auth.mixins import (
 )
 from django.shortcuts import get_object_or_404, render
 from django.core.cache import cache  # импортируем наш кэш
+# импортируем функцию для перевода
+from django.utils.translation import gettext as _
 
 from datetime import datetime
 
@@ -93,7 +95,7 @@ class NewsCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         'news.add_post',
     )
     success_url = '/news/'
-    error_message = 'No more than 30 posts a day, dude!'
+    error_message = _('No more than 30 posts a day, dude!')
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -159,7 +161,7 @@ class ArticlesCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         'news.add_post',
     )
     success_url = '/news/'
-    error_message = 'No more than 30 posts a day, dude!'
+    error_message = _('No more than 30 posts a day, dude!')
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -254,7 +256,8 @@ def sub_cat(request, pk):
     cat = Category.objects.get(id=pk)
     is_subscribed = cat.subscribers.filter(id=user.id).exists()
 
-    message = 'Вы успешно подписались на рассылку постов категории'
+    message = _('You have successfully subscribed to '
+                'the newsletter of posts of the category')
 
     if not is_subscribed:
         cat.subscribers.add(user)
@@ -272,7 +275,8 @@ def un_sub_cat(request, pk):
     cat = Category.objects.get(id=pk)
     is_subscribed = cat.subscribers.filter(id=user.id).exists()
 
-    message = 'Вы успешно отписались от рассылки постов категории'
+    message = _('You have successfully unsubscribed '
+                'from the mailing list of posts of the category')
 
     if is_subscribed:
         cat.subscribers.remove(user)

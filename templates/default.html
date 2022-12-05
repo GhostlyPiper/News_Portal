@@ -1,7 +1,8 @@
 {% load static %}
+{% load i18n %}
 
 
-<!DOCTYPE html>
+<!--<!DOCTYPE html>-->
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -26,19 +27,40 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="/">Вход</a>
+                            <a class="nav-link" href="/">{% trans "Sign in / Sign up"%}</a>
                         </li>
                         <li>
-                            <a class="nav-link" href="/news/">News</a>
+                            <a class="nav-link" href="/news/">{% trans "Posts" %}</a>
                         </li>
                         <li>
-                            <a class="nav-link" href="/news/search/">Search</a>
+                            <a class="nav-link" href="/news/search/">{% trans "Search" %}</a>
                         </li>
                         <li>
-                            <a class="nav-link" href="/news/my_posts/">Мои посты</a>
+                            <a class="nav-link" href="/news/my_posts/">{% trans "My Posts" %}</a>
                         </li>
-                    </ul>
+                     </ul>
                 </div>
+            </div>
+            <div>
+
+                <form action="{% url 'set_language' %}" method="POST"> {% csrf_token %} <!-- Не забываем по csrf_token для POST запросов -->
+
+                    <input type="hidden" name="next" value="{{ redirect_to }}">
+
+                    <select name="language" id="">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %} <!-- получаем языки -->
+                        {% get_language_info_list for LANGUAGES as languages %} <!-- Помещаем их в список languages -->
+
+                        {% for language in languages %} <!-- Итерируясь по списку, выводим их название на языке пользователя и код -->
+                            <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+                                {{ language.name_local }} - {{ language.code }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="set">
+                </form>
+
             </div>
         </nav>
         <!-- Page content-->

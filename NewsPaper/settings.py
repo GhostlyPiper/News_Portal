@@ -14,7 +14,7 @@ import os
 
 from pathlib import Path
 from dotenv import load_dotenv
-
+from django.utils.translation import gettext as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,6 +38,8 @@ ALLOWED_HOSTS = ['127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'modeltranslation',  # обязательно впишите его перед админом
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -64,6 +66,9 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+
+    'django.middleware.locale.LocaleMiddleware',
+    
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -186,7 +191,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'ru'
+LANGUAGE_CODE = 'en'
+# LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -321,11 +327,11 @@ LOGGING = {
         }
     },
     'loggers': {
-        'django': {
-            'handlers': ['console', 'console_warning', 'console_error', 'file_info'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
+        # 'django': {
+        #     'handlers': ['console', 'console_warning', 'console_error', 'file_info'],
+        #     'level': 'DEBUG',
+        #     'propagate': True,
+        # },
         'django.request': {
             'handlers': ['mail_admins', 'file_error'],
             'level': 'ERROR',

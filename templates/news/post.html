@@ -1,6 +1,7 @@
 <!--  наследуемся от шаблона default.html -->
 {% extends 'default.html' %}
 {% load custom_filters %}
+{% load i18n %}
 
 {% block title %}
 {{ post.title|censor }}
@@ -10,13 +11,13 @@
 {% block content %}
     <h3>{{ post.title|censor }}</h3>
     <hr>
-    <b>Дата публикации:</b> {{ post.dateCreation|date:'d M Y' }}
-    <b>Автор:</b> {{ post.author}}
-    <b>Категория:</b>
+    <b>{% trans "Date of publication" %}:</b> {{ post.dateCreation|date:'d M Y' }}
+    <b>{% trans "Author" %}:</b> {{ post.author}}
+    <b>{% trans "Category" %}:</b>
     {% for cat in post.postCategory.all %}
         "{{ cat }}",
     {% endfor %}
-    <b>Рейтинг статьи:</b> {{ post.rating}}
+    <b>{% trans "Rating" %}:</b> {{ post.rating}}
     <hr>
     {{ post.text|censor }}
 

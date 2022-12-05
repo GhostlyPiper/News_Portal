@@ -7,8 +7,10 @@ from .models import (
                     Comment,
                     CategorySubscribers,
                     PostCategory,
-                    # AuthorSubscribers,
                     )
+
+# импортируем модель амдинки
+from modeltranslation.admin import TranslationAdmin
 
 
 def nullify_rating(modeladmin, request, queryset):
@@ -30,12 +32,14 @@ def nullify_rating_author(modeladmin, request, queryset):
 
 
 # создаём новый класс для представления постов в админке
-class PostAdmin(admin.ModelAdmin):
+class PostAdmin(TranslationAdmin):  # admin.ModelAdmin
     # list_display — это список или кортеж со всеми полями,
     # которые вы хотите видеть в таблице
+    model = Post
     list_display = ('title', 'author', 'dateCreation', 'text', 'rating')
     list_filter = ('rating', 'dateCreation', 'author')
     search_fields = ('title', 'postCategory__name')
+    list_per_page = 5
     actions = [nullify_rating]
 
 
@@ -48,9 +52,17 @@ class AuthorAdmin(admin.ModelAdmin):  # TranslationAdmin):
     actions = [nullify_rating_author]
 
 
+class CategoryAdmin(TranslationAdmin):  # admin.ModelAdmin):
+    model = Category
+
+
+class CommentAdmin(TranslationAdmin):  # admin.ModelAdmin):
+    model = Comment
+
+
 admin.site.register(Author, AuthorAdmin)
-admin.site.register(Category)
+admin.site.register(Category, CategoryAdmin)
 admin.site.register(Post, PostAdmin)
-admin.site.register(Comment)
+admin.site.register(Comment, CommentAdmin)
 admin.site.register(CategorySubscribers)
 admin.site.register(PostCategory)

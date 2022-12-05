@@ -8,23 +8,24 @@ from django_filters import (FilterSet,
                             )
 
 from .models import Author, Category, CategorySubscribers
+from django.utils.translation import gettext as _
 
 
 class PostFilter(FilterSet):
     date = DateFilter(
         field_name='dateCreation',
         lookup_expr='gte',
-        label='Опубликовано после',
+        label=_('Published after'),
         widget=DateInput(attrs={'type': 'date'})
     )
     title = CharFilter(
         lookup_expr='icontains',
-        label='Заголовок содержит'
+        label=_('The header contains')
     )
     author = ModelChoiceFilter(
         queryset=Author.objects.all(),
-        label='Автор',
-        empty_label='Все'
+        label=_('Author'),
+        empty_label='All'
     )
     date.field.error_messages = {
         'invalid': 'Enter date in format DD.MM.YYYY. Example: 31.12.2020'
@@ -40,7 +41,7 @@ class PostFilter(FilterSet):
     Category = ModelMultipleChoiceFilter(
         field_name='postCategory',
         queryset=Category.objects.all(),
-        label='Категория',
+        label=_('Category'),
     )
 
 

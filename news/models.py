@@ -4,6 +4,9 @@ from django.db.models import Sum
 from django.urls import reverse
 from django.utils import timezone
 from django.core.cache import cache
+from django.utils.translation import gettext as _
+# импортируем «ленивый» геттекст с подсказкой
+from django.utils.translation import pgettext_lazy
 
 
 class Author(models.Model):
@@ -27,33 +30,32 @@ class Author(models.Model):
     def __str__(self):
         return f'{self.authorUser}'
 
-
-# class AuthorSubscribers(models.Model):
-#     user = models.ForeignKey(
-#         User,
-#         on_delete=models.CASCADE,
-#         blank=True, null=True
-#     )
-#     author = models.ForeignKey(
-#         Author,
-#         on_delete=models.CASCADE,
-#         blank=True, null=True
-#     )
-#
-#     def __str__(self):
-#         return f'{self.user} <->  {self.author}'
+    class Meta:
+        verbose_name = _('Author')
+        verbose_name_plural = _('Authors')
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=64,
+                            help_text=_('category name'),
+                            unique=True
+                            )
     subscribers = models.ManyToManyField(
         User,
         through='CategorySubscribers',
-        blank=True
+        blank=True,
+        verbose_name=pgettext_lazy(
+            'help text for Category subscribers',
+            'subscribers'
+        ),
     )
 
     def __str__(self):
         return f'{self.name.title()}'
+
+    class Meta:
+        verbose_name = _('Category')
+        verbose_name_plural = _('Categories')
 
 
 class CategorySubscribers(models.Model):
@@ -78,8 +80,8 @@ class Post(models.Model):
     NEWS = 'NW'
     ARTICLE = 'AR'
     CATEGORY_CHOICES = (
-        (NEWS, 'Новость'),
-        (ARTICLE, 'Статья'),
+        (NEWS, _('News')),
+        (ARTICLE, _('Article')),
     )
     categoryType = models.CharField(max_length=2,
                                     choices=CATEGORY_CHOICES,
@@ -100,7 +102,7 @@ class Post(models.Model):
         self.save()
 
     def preview(self):
-        return f'{self.text[0:123]} ... Рейтинг: {self.rating}'
+        return f'{self.text[0:123]}'
 
     def __str__(self):
         return f'{self.title}'
@@ -140,3 +142,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.text}'
+
+    class Meta:
+        verbose_name = _('Comment')
+        verbose_name_plural = _('Comments')

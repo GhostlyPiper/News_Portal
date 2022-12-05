@@ -1,23 +1,24 @@
 {% extends 'default.html' %}
+{% load i18n %}
 
 {% block content %}
-<h2>Приветствуем {{request.user.username.title}}!</h2>
-<h5>Вы успешно авторизовались на нашем сайте.</h5>
+<h2>{% trans "Welcome" %} {{request.user.username.title}}!</h2>
+<h5>{% trans "You have successfully logged in to our website" %}.</h5>
 <hr>
 {% if is_not_author %}
-    <div> Что бы иметь возможность добавлять свои публикации авторизуйтесь как автор! ->
-    <button> <a href="sign/upgrade/"> Стать автором </a> </button>
+    <div> {% trans "To be able to add your publications, log in as an author" %}! ->
+    <button> <a href="sign/upgrade/"> {% trans "Become an author" %} </a> </button>
     </div>
 {% else %}
-<h6> ВНИМАНИЕ!!! При удалении из группы "Авторы" все ваши публикации автоматически удаляются! </h6>
-    <button> <a href="sign/log_out_author/"> Выйти из группы Авторы </a> </button>
+<h6> {% trans "Attention!!! When you delete from the Authors group, all your publications are automatically deleted" %}! </h6>
+    <button> <a href="sign/log_out_author/"> {% trans "Exit the Authors group" %} </a> </button>
 
 {% endif %}
 
 <hr>
-Что бы отредактировать профиль нажмите ->
-<button> <a href="sign/profile_update/">Редактировать профиль</a> </button>
+{% trans "To edit the profile, click" %} ->
+<button> <a href="sign/profile_update/">{% trans "Edit Profile" %}</a> </button>
 <hr>
-Разлогиниться ->
-<button> <a href="sign/logout/">Выйти</a> </button>
+{% trans "Log Out" %} ->
+<button> <a href="sign/logout/">{% trans "Exit" %}</a> </button>
 {% endblock %}

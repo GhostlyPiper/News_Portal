@@ -1,48 +1,49 @@
 {% extends 'default.html' %}
 {% load custom_filters %}
 {% load custom_tags %}
+{% load i18n %}
 
 
 {% block title %}
-Search
+{% trans "Search" %}
 {% endblock title %}
 
 {% block content %}
 
-    <h3>Поиск публикаций</h3>
-    <h4>Текущая дата: {% current_time '%d %B %Y' %}</h4>
+    <h3>{% trans "Search for publications" %}</h3>
+    <h4>{% trans "Current date" %}: {% current_time '%d %B %Y' %}</h4>
     <hr>
     <form method="GET">
         {{ filter.form }}
         <hr>
-        <p><input type="submit" value="Найти"></p>
+        <p><input type="submit" value="Search"></p>
     </form>
     {% if filter.qs  %}
         <h3>
             {% if filter.qs|length > 1 %}
-                {{ filter.qs|length }} - posts found
+                {{ filter.qs|length }} - {% trans "posts found" %}
             {% elif filter.qs|length == 1 %}
-                Only 1 post found
+                {% trans "Only 1 post found" %}
             {% endif %}
         </h3>
         <table>
             <tr>
-                <td><b>Название</b></td>
-                <td><b>Тип</b></td>
-                <td><b>Дата публикации</b></td>
-                <td><b>Автор</b></td>
-                <td><b>Краткое содержание</b></td>
-                <td><b>Рейтинг</b></td>
-                <td><b>Категория</b></td>
+                <td><b>{% trans "Title" %}</b></td>
+                <td><b>{% trans "Type" %}</b></td>
+                <td><b>{% trans "Date of publication" %}</b></td>
+                <td><b>{% trans "Author" %}</b></td>
+                <td><b>{% trans "Preview" %}</b></td>
+                <td><b>{% trans "Rating" %}</b></td>
+                <td><b>{% trans "Category" %}</b></td>
            </tr>
 
             {% for post in search_list %}
             <tr>
                 <td><a href="/news/{{ post.id }}">{{ post.title|censor }}</a></td>
                 <td>{% if post.categoryType == 'NW' %}
-                        Новость
+                        {% trans "News" %}
                     {% elif post.categoryType == 'AR'  %}
-                        Статья
+                        {% trans "Article" %}
                     {% endif %}
                 </td>
                 <td>{{ post.dateCreation|date:'d M Y' }}</td>
@@ -58,7 +59,7 @@ Search
 
         </table>
     {% else %}
-        <h2>По таким критериям постов нет!</h2>
+        <h2>{% trans "There are no posts according to such criteria" %}!</h2>
     {% endif %}
 
     {% if page_obj.has_previous %}

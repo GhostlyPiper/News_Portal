@@ -1,7 +1,8 @@
 {% extends 'default.html' %}
+{% load i18n %}
 
 {% block content %}
-<h1>News</h1>
+<h1>{% trans "News" %}</h1>
 <hr>
 <form action="" method="post">
     {% csrf_token %}

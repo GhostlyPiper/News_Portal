@@ -1,30 +1,31 @@
 {% extends 'default.html' %}
 {% load custom_filters %}
 {% load custom_tags %}
+{% load i18n %}
 
 {% block content %}
 
     {% if author_posts %}
-    <h2>Все ваши публикации:</h2>
+    <h2>{% trans "All your publications" %}:</h2>
     <hr>
     <table>
                 <tr>
-                    <td><b>Название</b></td>
-                    <td><b>Тип</b></td>
-                    <td><b>Категория</b></td>
-                    <td><b>Дата публикации</b></td>
-                    <td><b>Автор</b></td>
-                    <td><b>Краткое содержание</b></td>
-                    <td><b>Рейтинг</b></td>
+                    <td><b>{% trans "Title" %}</b></td>
+                    <td><b>{% trans "Type" %}</b></td>
+                    <td><b>{% trans "Category" %}</b></td>
+                    <td><b>{% trans "Date of publication" %}</b></td>
+                    <td><b>{% trans "Author" %}</b></td>
+                    <td><b>{% trans "Preview" %}</b></td>
+                    <td><b>{% trans "Rating" %}</b></td>
                </tr>
 
                 {% for post in author_posts %}
                 <tr>
                     <td><a href="/news/{{ post.id }}">{{ post.title|censor }}</a></td>
                     <td>{% if post.categoryType == 'NW' %}
-                            Новость
+                            {% trans "News" %}
                         {% elif post.categoryType == 'AR'  %}
-                            Статья
+                            {% trans "Article" %}
                         {% endif %}
                     </td>
                     <td>{% for cat in post.postCategory.all %}
@@ -40,21 +41,21 @@
 
             </table>
     {% else %}
-        <br><b>Вы пока ещё не добавили ни одной публикации.</b>
+        <br><b>{% trans "You haven't added any posts yet" %}.</b>
 
     {% endif %}
 
 <hr>
 {% if is_not_author %}
-    <div> Что бы иметь возможность добавлять свои публикации авторизуйтесь как автор! ->
-    <button> <a href="http://127.0.0.1:8000/sign/upgrade/"> Стать автором </a> </button>
+    <div> {% trans "To be able to add your publications, log in as an author" %}! ->
+    <button> <a href="http://127.0.0.1:8000/sign/upgrade/"> {% trans "Become an author" %} </a> </button>
     </div>
 {% else %}
-    <button> <a href="/news/news/create"> Добавить новость </a> </button>
-    <button> <a href="/news/articles/create"> Добавить статью </a> </button>
+    <button> <a href="/news/news/create"> {% trans "Add News" %} </a> </button>
+    <button> <a href="/news/articles/create"> {% trans "Add an Article" %} </a> </button>
     <hr>
-    <b>ВНИМАНИЕ!!! При удалении из группы "Авторы" все ваши публикации автоматически удаляются!</b>
-    <br><button> <a href="/sign/log_out_author/"> Выйти из группы Авторы </a> </button>
+    <b>{% trans "Attention!!! When you delete from the Authors group, all your publications are automatically deleted" %}!</b>
+    <br><button> <a href="/sign/log_out_author/"> {% trans "Exit the Authors group" %} </a> </button>
 
 {% endif %}
 <hr>
