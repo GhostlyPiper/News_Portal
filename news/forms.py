@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-
+from django.utils.translation import gettext_lazy as _
 from .models import Post
 
 
@@ -11,6 +11,7 @@ class PostForm(forms.ModelForm):
             'title',
             'text',
             'postCategory',
+            # 'categoryType',
         ]
 
     def clean(self):
@@ -18,12 +19,13 @@ class PostForm(forms.ModelForm):
         text = cleaned_data.get("text")
         if text is not None and len(text) < 20:
             raise ValidationError({
-                "text": "Текст поста не может быть менее 20 символов."
+                "text": _("The text of the post can not "
+                          "be less than 20 characters.")
             })
 
         title = cleaned_data.get("title")
         if title == text:
             raise ValidationError(
-                "Название не должно совпадать с основным текстом."
+                _("The title should not match the main text.")
             )
         return cleaned_data

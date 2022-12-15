@@ -6,7 +6,7 @@ from django.views.generic import (ListView,
                                   UpdateView,
                                   DeleteView,
                                   )
-from django.contrib import messages
+
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import (
@@ -19,12 +19,11 @@ from django.core.cache import cache  # импортируем наш кэш
 from django.utils.translation import gettext as _
 
 from datetime import datetime
-
 from .models import Post, Author, Category
 from .filters import PostFilter
 from .forms import PostForm
-
 from .tasks import notify_news_create
+from NewsPaper.settings import DAILY_POST_LIMIT
 
 
 class PostList(ListView):
@@ -39,7 +38,7 @@ class PostList(ListView):
     # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
     context_object_name = 'posts'
     # вот так мы можем указать количество записей на странице:
-    paginate_by = 10
+    paginate_by = 5
 
 
 class PostDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
@@ -65,6 +64,11 @@ class PostDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
             cache.set(f'post-{self.kwargs["pk"]}', obj)
 
         return obj
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_author'] = self.request.user.groups.filter(name='authors').exists()
+        return context
 
 
 class PostSearchView(ListView):
@@ -94,42 +98,42 @@ class NewsCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = (
         'news.add_post',
     )
-    success_url = '/news/'
-    error_message = _('No more than 30 posts a day, dude!')
+    success_url = "/news/my_posts/"
+    error_message = _('No more than') + f' {DAILY_POST_LIMIT} ' + _(
+        'posts a day, dude!')
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.categoryType = 'NW'
         self.object.author = Author.objects.get(authorUser=self.request.user)
-        postauthor = self.object.author
-        posts = Post.objects.all()
-        daily_post_limit = 30
+        self.object.save()
 
-        today_posts_count = 0
-        for post in posts:
-            if post.author == postauthor:
-                time_delta = datetime.now().date() - post.dateCreation.date()
-                if time_delta.total_seconds() < (60 * 60 * 24):
-                    today_posts_count += 1
+        cat = Category.objects.get(pk=self.request.POST['postCategory'])
+        self.object.postCategory.add(cat)
 
-        if today_posts_count < daily_post_limit:
-            self.object.save()
-
-            cat = Category.objects.get(pk=self.request.POST['postCategory'])
-            self.object.postCategory.add(cat)
-
-            validated = super().form_valid(form)
-            notify_news_create.apply_async(
-                [self.object.pk],
-                countdown=5,
-                expires=100
-            )
-
-        else:
-            messages.error(self.request, self.error_message)
-            validated = super().form_invalid(form)
+        validated = super().form_valid(form)
+        notify_news_create.apply_async(
+            [self.object.pk],
+            countdown=5,
+            expires=100
+        )
 
         return validated
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        posts = Post.objects.all()
+        today_posts_count = 0
+        limit = DAILY_POST_LIMIT
+
+        for post in posts:
+            time_delta = datetime.now().date() - post.dateCreation.date()
+            if time_delta.total_seconds() < (60 * 60 * 24):
+                today_posts_count += 1
+
+        context['posts_limit'] = limit <= today_posts_count
+        context['limit'] = limit
+        return context
 
 
 class NewsEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
@@ -160,40 +164,41 @@ class ArticlesCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = (
         'news.add_post',
     )
-    success_url = '/news/'
-    error_message = _('No more than 30 posts a day, dude!')
+    success_url = "/news/my_posts/"
+    error_message = _('No more than') + f' {DAILY_POST_LIMIT} ' + _(
+        'posts a day, dude!')
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.author = Author.objects.get(authorUser=self.request.user)
-        postauthor = self.object.author
-        posts = Post.objects.all()
-        daily_post_limit = 30
+        self.object.save()
 
-        today_posts_count = 0
-        for post in posts:
-            if post.author == postauthor:
-                time_delta = datetime.now().date() - post.dateCreation.date()
-                if time_delta.total_seconds() < (60 * 60 * 24):
-                    today_posts_count += 1
+        cat = Category.objects.get(pk=self.request.POST['postCategory'])
+        self.object.postCategory.add(cat)
 
-        if today_posts_count < daily_post_limit:
-            self.object.save()
-
-            cat = Category.objects.get(pk=self.request.POST['postCategory'])
-            self.object.postCategory.add(cat)
-            validated = super().form_valid(form)
-            notify_news_create.apply_async(
-                [self.object.pk],
-                countdown=5,
-                expires=100
-            )
-
-        else:
-            messages.error(self.request, self.error_message)
-            validated = super().form_invalid(form)
+        validated = super().form_valid(form)
+        notify_news_create.apply_async(
+            [self.object.pk],
+            countdown=5,
+            expires=100
+        )
 
         return validated
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        posts = Post.objects.all()
+        today_posts_count = 0
+        limit = DAILY_POST_LIMIT
+
+        for post in posts:
+            time_delta = datetime.now().date() - post.dateCreation.date()
+            if time_delta.total_seconds() < (60 * 60 * 24):
+                today_posts_count += 1
+
+        context['posts_limit'] = limit <= today_posts_count
+        context['limit'] = limit
+        return context
 
 
 class ArticlesEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):

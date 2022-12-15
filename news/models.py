@@ -4,9 +4,7 @@ from django.db.models import Sum
 from django.urls import reverse
 from django.utils import timezone
 from django.core.cache import cache
-from django.utils.translation import gettext as _
-# импортируем «ленивый» геттекст с подсказкой
-from django.utils.translation import pgettext_lazy
+from django.utils.translation import gettext_lazy as _
 
 
 class Author(models.Model):
@@ -44,10 +42,7 @@ class Category(models.Model):
         User,
         through='CategorySubscribers',
         blank=True,
-        verbose_name=pgettext_lazy(
-            'help text for Category subscribers',
-            'subscribers'
-        ),
+        verbose_name=_('subscribers'),
     )
 
     def __str__(self):
@@ -88,9 +83,19 @@ class Post(models.Model):
                                     default=ARTICLE
                                     )
     dateCreation = models.DateTimeField(default=timezone.now)
-    postCategory = models.ManyToManyField(Category, through='PostCategory')
-    title = models.CharField(max_length=128, unique=True)
-    text = models.TextField()
+    postCategory = models.ManyToManyField(
+        Category,
+        through='PostCategory',
+        verbose_name=_('category'),
+    )
+    title = models.CharField(
+        max_length=128,
+        unique=True,
+        verbose_name=_('title'),
+    )
+    text = models.TextField(
+        verbose_name=_('text'),
+    )
     rating = models.SmallIntegerField(default=0)
 
     def like(self):

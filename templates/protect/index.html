@@ -1,9 +1,15 @@
 {% extends 'default.html' %}
 {% load i18n %}
+{% load tz %}
 
 {% block content %}
 <h2>{% trans "Welcome" %} {{request.user.username.title}}!</h2>
 <h5>{% trans "You have successfully logged in to our website" %}.</h5>
+<hr>
+    <h5>
+    {% trans 'You have chosen a time zone' %} : {{ TIME_ZONE }}
+        <br> {% trans 'Current time'%} : {{ current_time|timezone:TIME_ZONE }}
+    </h5>
 <hr>
 {% if is_not_author %}
     <div> {% trans "To be able to add your publications, log in as an author" %}! ->

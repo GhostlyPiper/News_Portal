@@ -14,7 +14,6 @@
                     <td><b>{% trans "Type" %}</b></td>
                     <td><b>{% trans "Category" %}</b></td>
                     <td><b>{% trans "Date of publication" %}</b></td>
-                    <td><b>{% trans "Author" %}</b></td>
                     <td><b>{% trans "Preview" %}</b></td>
                     <td><b>{% trans "Rating" %}</b></td>
                </tr>
@@ -33,7 +32,6 @@
                     {% endfor %}
                     </td>
                     <td>{{ post.dateCreation|date:'d M Y' }}</td>
-                    <td>{{ post.author }}</td>
                     <td>{{ post.text|truncatewords:20|censor }}</td>
                     <td>{{ post.rating }}</td>
                 </tr>

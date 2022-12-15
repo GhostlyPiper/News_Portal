@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-04 22:05+0000\n"
+"POT-Creation-Date: 2022-12-09 10:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,63 +26,90 @@ msgstr ""
 msgid "The header contains"
 msgstr ""
 
-#: news/filters.py:27 news/models.py:34 templates/news/category_list.html:39
+#: news/filters.py:27 news/models.py:32 templates/news/category_list.html:39
 #: templates/news/post.html:15 templates/news/post_author_view.html:17
 #: templates/news/post_search.html:34 templates/news/posts.html:30
 msgid "Author"
 msgstr ""
 
-#: news/filters.py:44 news/models.py:57 templates/news/category_list.html:42
+#: news/filters.py:44 news/models.py:52 templates/news/category_list.html:42
 #: templates/news/post.html:16 templates/news/post_author_view.html:15
 #: templates/news/post_search.html:37 templates/news/posts.html:32
 msgid "Category"
 msgstr ""
 
-#: news/models.py:35
+#: news/forms.py:22
+msgid "The text of the post can not be less than 20 characters."
+msgstr ""
+
+#: news/forms.py:29
+msgid "The title should not match the main text."
+msgstr ""
+
+#: news/models.py:33
 msgid "Authors"
 msgstr ""
 
-#: news/models.py:40
+#: news/models.py:38
 msgid "category name"
 msgstr ""
 
-#: news/models.py:49
-msgctxt "help text for Category subscribers"
+#: news/models.py:45
 msgid "subscribers"
 msgstr ""
 
-#: news/models.py:58
+#: news/models.py:53
 msgid "Categories"
 msgstr ""
 
-#: news/models.py:83 templates/news/news_edit.html:5
+#: news/models.py:78 templates/news/news_edit.html:5
 #: templates/news/post_author_view.html:26 templates/news/post_search.html:44
 msgid "News"
 msgstr ""
 
-#: news/models.py:84 templates/news/articles_edit.html:5
+#: news/models.py:79 templates/news/articles_edit.html:5
 #: templates/news/post_author_view.html:28 templates/news/post_search.html:46
 msgid "Article"
 msgstr ""
 
-#: news/models.py:147
+#: news/models.py:89
+msgid "category"
+msgstr ""
+
+#: news/models.py:94
+msgid "title"
+msgstr ""
+
+#: news/models.py:97
+msgid "text"
+msgstr ""
+
+#: news/models.py:152
 msgid "Comment"
 msgstr ""
 
-#: news/models.py:148
+#: news/models.py:153
 msgid "Comments"
 msgstr ""
 
-#: news/views.py:98 news/views.py:164
+#: news/views.py:97
+msgid "No more than"
+msgstr ""
+
+#: news/views.py:97
+msgid "posts a day, dude!"
+msgstr ""
+
+#: news/views.py:162
 msgid "No more than 30 posts a day, dude!"
 msgstr ""
 
-#: news/views.py:259
+#: news/views.py:257
 msgid ""
 "You have successfully subscribed to the newsletter of posts of the category"
 msgstr ""
 
-#: news/views.py:277
+#: news/views.py:276
 msgid ""
 "You have successfully unsubscribed from the mailing list of posts of the "
 "category"
@@ -90,6 +117,10 @@ msgstr ""
 
 #: templates/account/profile_update.html:7
 msgid "Your Profile"
+msgstr ""
+
+#: templates/account/profile_update.html:13
+msgid "Update Profile"
 msgstr ""
 
 #: templates/default.html:30
@@ -101,6 +132,7 @@ msgid "Posts"
 msgstr ""
 
 #: templates/default.html:36 templates/news/post_search.html:8
+#: templates/news/post_search.html:19
 msgid "Search"
 msgstr ""
 
@@ -114,6 +146,10 @@ msgstr ""
 
 #: templates/news/articles_delete.html:9 templates/news/news_delete.html:9
 msgid "Delete"
+msgstr ""
+
+#: templates/news/articles_edit.html:10 templates/news/news_edit.html:14
+msgid "Save"
 msgstr ""
 
 #: templates/news/category_list.html:16
@@ -164,6 +200,18 @@ msgstr ""
 
 #: templates/news/news_delete.html:5
 msgid "Deleting news"
+msgstr ""
+
+#: templates/news/news_edit.html:8
+msgid "You can't publish any more news today"
+msgstr ""
+
+#: templates/news/news_edit.html:9
+msgid "Restriction on"
+msgstr ""
+
+#: templates/news/news_edit.html:9
+msgid "posts in 24 hours"
 msgstr ""
 
 #: templates/news/post_author_view.html:9

@@ -10,7 +10,7 @@
 <form action="" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Update Profile"/>
+    <input type="submit" value="{% trans 'Update Profile' %}"/>
 </form>
 <hr>
 {% endblock content %}

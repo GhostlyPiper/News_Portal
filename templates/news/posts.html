@@ -14,7 +14,10 @@
 <!-- В контенте на странице мы выводим все посты -->
 {% block content %}
     <h1>{% trans "All publications" %}</h1>
-    <h3>{% current_time '%b %d %Y %H:%M' %}</h3>
+    <h6>
+    | {% trans 'Current time' %} : {{ current_time }} |
+    {%trans 'Time zone' %} : {{ TIME_ZONE }} |
+    </h6>
     <hr>
     {% if posts %}
     <h2>{% trans "Publications on the page" %} - {{ posts|length }}</h2>

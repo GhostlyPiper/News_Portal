@@ -6,7 +6,7 @@
 <hr>
 <form action="" method="post">
     {% csrf_token %}
-    <p>{% trans "Delete" %} "{{ object.title }}"?</p>
-    <input type="submit" value="Delete" />
+    <p><h5>{% trans "Delete" %} "{{ object.title }}" ???</h5>
+    <br><button type="submit" class="btn btn-danger" role="button">{% trans 'Delete' %}</button>
 </form>
 {% endblock content %}

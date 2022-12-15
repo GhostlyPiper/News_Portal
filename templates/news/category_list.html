@@ -5,6 +5,7 @@
 
 {# Импортируем модуль с нашим тегом #}
 {% load custom_tags %}
+{% load tz %}
 
 
 {% block title %}
@@ -14,7 +15,7 @@
 <!-- В контенте на странице мы выводим все посты -->
 {% block content %}
     <h1>{% trans "All news in the category" %} "{{ category }}"</h1>
-    <h3>{% current_time '%b %d %Y %H:%M' %}</h3>
+    <h3>{{ current_time }}</h3>
     <hr>
     {% if is_not_subscriber %}
     <h3>
@@ -44,7 +45,7 @@
 
             {% for post in category_news_list %}
             <tr>
-                <td>{{ post.title|censor }}</td>
+                <td><a href="/news/{{ post.id }}">{{ post.title|censor }}</a></td>
                 <td>{{ post.dateCreation|date:'d M Y' }}</td>
                 <td>{{ post.author }}</td>
                 <td>{{ post.text|truncatewords:20|censor }}</td>

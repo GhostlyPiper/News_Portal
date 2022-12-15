@@ -40,7 +40,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = User
     template_name = 'profile_update.html'
     form_class = UpdateProfileForm
-    success_url = '/news/'
+    success_url = '/'
     success_message = 'User profile updated successfully.'
 
     def get_object(self, **kwargs):

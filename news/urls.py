@@ -13,7 +13,6 @@ from .views import (PostList,
                     sub_cat,
                     un_sub_cat,
                     CategoryList,
-
                     )
 
 

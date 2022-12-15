@@ -2,11 +2,16 @@
 {% load i18n %}
 
 {% block content %}
-<h1>{% trans "News" %}</h1>
-<hr>
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Save" />
-</form>
+    <h1>{% trans "News" %}</h1>
+    <hr>
+    {% if posts_limit %}
+    <b>{% trans "You can't publish any more news today" %}!
+        <br> {% trans 'Restriction on' %} {{ limit }} {% trans 'posts in 24 hours' %}!</b>
+    {% else %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value={% trans "Save" %} />
+    </form>
+    {% endif %}
 {% endblock content %}

@@ -11,14 +11,30 @@
 {% block content %}
     <h3>{{ post.title|censor }}</h3>
     <hr>
-    <b>{% trans "Date of publication" %}:</b> {{ post.dateCreation|date:'d M Y' }}
-    <b>{% trans "Author" %}:</b> {{ post.author}}
+    | <b>{% trans "Date of publication" %}:</b> {{ post.dateCreation|date:'d M Y' }} |
+
+    <b>{% trans "Type" %}:</b>
+        {% if post.categoryType == 'NW' %}
+            {% trans "News" %} |
+        {% elif post.categoryType == 'AR'  %}
+            {% trans "Article" %} |
+        {% endif %}
     <b>{% trans "Category" %}:</b>
     {% for cat in post.postCategory.all %}
         "{{ cat }}",
     {% endfor %}
-    <b>{% trans "Rating" %}:</b> {{ post.rating}}
+    | <b>{% trans "Rating" %}:</b> {{ post.rating}} |
     <hr>
-    {{ post.text|censor }}
+        <p align="justify">{{ post.text|censor }}</p>
+    <hr>
+    {% if post.categoryType == 'NW' %}
+        <a href="{% url 'news_edit' post.id %}" class="btn btn-warning" role="button">{% trans 'Edit news' %}</a>
+        |
+        <a href="{% url 'news_delete' post.id %}" class="btn btn-danger" role="button">{% trans 'Delete news' %}</a>
+    {% elif post.categoryType == 'AR' %}
+        <a href="{% url 'articles_edit' post.id %}" class="btn btn-warning" role="button">{% trans 'Edit article' %}</a>
+        |
+        <a href="{% url 'articles_delete' post.id %}" class="btn btn-danger" role="button">{% trans 'Delete article' %}</a>
+    {% endif %}
 
 {% endblock content %}

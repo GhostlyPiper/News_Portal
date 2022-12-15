@@ -11,12 +11,15 @@
 {% block content %}
 
     <h3>{% trans "Search for publications" %}</h3>
-    <h4>{% trans "Current date" %}: {% current_time '%d %B %Y' %}</h4>
+    <h6>
+    | {% trans 'Current time' %} : {{ current_time }} |
+    {%trans 'Time zone' %} : {{ TIME_ZONE }} |
+    </h6>
     <hr>
     <form method="GET">
         {{ filter.form }}
         <hr>
-        <p><input type="submit" value="Search"></p>
+        <p><input type="submit" value={% trans "Search" %}></p>
     </form>
     {% if filter.qs  %}
         <h3>

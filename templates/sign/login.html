@@ -1,4 +1,5 @@
 {% extends 'default.html' %}
+{% load i18n %}
 
 {% block content %}
 <h2> Log In </h2>
@@ -17,5 +18,5 @@
 
 <input type="submit" value="Sign In">
 </form>
-<button> <a href="/sign/signup"> Sign Up </a></button>
+<button> <a href="/sign/signup"> {% trans 'Sign Up' %} </a></button>
 {% endblock %}

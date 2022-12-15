@@ -1,5 +1,6 @@
 {% load static %}
 {% load i18n %}
+{% load tz %} <!-- не забываем загрузить тег для работы с часовыми поясами -->
 
 
 <!--<!DOCTYPE html>-->
@@ -12,6 +13,15 @@
         <title>{% block title %}{% endblock title %}</title>
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <style>
+            body {background-color:
+                {% if current_time.hour >= 19 or current_time.hour <= 7 %}
+                 powderblue
+                {% else %}
+                 transparent
+                {% endif %};
+                }
+        </style>
     </head>
     <body>
         <!-- Responsive navbar-->
@@ -22,7 +32,6 @@
                        data-target="#navbarResponsive"
                        aria-controls="navbarResponsive" aria-expanded="false"
                        aria-label="Toggle navigation">
-<!--                   <span class="navbar-toggler-icon"></span>-->
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
@@ -41,12 +50,11 @@
                      </ul>
                 </div>
             </div>
-            <div>
-
-                <form action="{% url 'set_language' %}" method="POST"> {% csrf_token %} <!-- Не забываем по csrf_token для POST запросов -->
-
+            <!-- Локализация по языку -->
+            <div style="color:#FFFFFF">
+                <form action="{% url 'set_language' %}" method="POST">
+                    {% csrf_token %} <!-- Не забываем по csrf_token для POST запросов -->
                     <input type="hidden" name="next" value="{{ redirect_to }}">
-
                     <select name="language" id="">
                         {% get_current_language as LANGUAGE_CODE %}
                         {% get_available_languages as LANGUAGES %} <!-- получаем языки -->
@@ -59,6 +67,24 @@
                         {% endfor %}
                     </select>
                     <input type="submit" value="set">
+                </form>
+            </div>
+            <div style="color:#FFFFFF">
+                <!-- Локализация по часовым поясам -->
+                {% get_current_timezone as TIME_ZONE %}
+                <form action="{% url 'set_timezone' %}" method="POST">
+                    {% csrf_token %}
+                    <label for="timezone">{% trans 'Time zone' %}:</label>
+                    <select name="timezone">
+                        {% for tz in timezones %}
+                            <option
+                              value="{{ tz }}"{% if tz == TIME_ZONE %} selected {% endif %}>{{ tz }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="set">
+                    {{ TIME_ZONE }}
+                    {{ current_time|timezone:TIME_ZONE }} <!-- Отображаем время в выбранном часовом поясе  -->
                 </form>
 
             </div>
